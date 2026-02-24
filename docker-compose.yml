@@ -1,0 +1,43 @@
+services:
+    app:
+        container_name: neko_manager
+        depends-on:
+            mysql:
+                condition: services-healthy
+        networks:
+            - cat_watching_net
+    
+    nginx:
+        image: nginx:alpine
+        container_name: cat_nyanginx
+        ports:
+            -   "80:80"
+        depends_on:
+            - app
+        networks:
+            - cat_watching_net
+
+    mysql:
+        image: mysql:8.0
+        container_name: cat_nyansql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            -   mysql_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 10s
+            retries: 5
+            start_period: 10
+        networks:
+            - cat_watching_net
+volumes:
+    mysql_data:
+
+networks:
+    cat_watching_net:
+        driver: bridge
