@@ -16,7 +16,7 @@ RUN apk add --no-cache \
     linux-headers
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gdzip
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Xdebug
 RUN pecl install xdebug \

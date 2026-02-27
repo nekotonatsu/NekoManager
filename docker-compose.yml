@@ -1,9 +1,9 @@
 services:
     app:
         container_name: neko_manager
-        depends-on:
+        depends_on:
             mysql:
-                condition: services-healthy
+                condition: service_healthy
         networks:
             - cat_watching_net
     
@@ -32,7 +32,7 @@ services:
             interval: 10s
             timeout: 10s
             retries: 5
-            start_period: 10
+            start_period: 10s
         networks:
             - cat_watching_net
 volumes:
