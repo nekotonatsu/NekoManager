@@ -1,0 +1,25 @@
+FROM php:8.3-fpm-alpine                                              
+                                                            
+RUN apk add --no-cache \                                           
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    oniguruma-dev
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gdzip opcache
+
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/php/php-prod.ini /usr/local/etc/php/conf.d/custom.ini
+
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+# アプリコードをイメージに内包
+COPY backend/ .
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && chown -R www-data:www-data /var/www/html/storage/var/www/html/bootstrap/cache
