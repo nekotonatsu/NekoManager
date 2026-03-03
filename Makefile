@@ -33,3 +33,14 @@ prod-build:
 
 prod-down:
 	docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+
+test:
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml exec \
+		-e DB_CONNECTION=sqlite \
+		-e DB_DATABASE=":memory:" \
+		-e DB_HOST="" \
+		-e DB_USERNAME="" \
+		-e DB_PASSWORD="" \
+		-e SESSION_DRIVER=array \
+		-e SANCTUM_STATEFUL_DOMAINS=localhost \
+		app php artisan test

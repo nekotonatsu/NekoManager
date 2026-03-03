@@ -33,6 +33,28 @@ class AuthController extends Controller {
         ]);
     }
 
+    public function login(Request $request): JsonResponse
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            throw ValidationException::withMessages([
+                'email' => ['メールアドレスかパスワードが正しくありません'],
+            ]);
+        }
+
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
+
+        return response()->json([
+            'user' => Auth::user()
+        ]);
+    }
+
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();
