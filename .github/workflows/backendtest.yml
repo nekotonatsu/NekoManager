@@ -24,7 +24,9 @@ jobs:
 
         - name: Generate APP_KEY
           working-directory: backend
-          run: php artisan key:generate --env=testing
+          run: |
+            echo "APP_KEY=" > .env
+            php artisan key:generate --force
 
         - name: Run tests
           working-directory: backend
