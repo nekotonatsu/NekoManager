@@ -4,13 +4,11 @@ namespace App\Policies;
 
 use App\Models\Expense;
 use App\Models\User;
+use App\Policies\Traits\OwnershipAuthorization;
 
 class ExpensePolicy
 {
-    private function isOwner(User $user, Expense $expense): bool
-    {
-        return $user->id === $expense->user_id;
-    }
+    use OwnershipAuthorization;
 
     public function view(User $user, Expense $expense): bool
     {

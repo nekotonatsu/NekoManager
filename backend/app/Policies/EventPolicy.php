@@ -4,13 +4,11 @@ namespace App\Policies;
 
 use App\Models\Event;
 use App\Models\User;
+use App\Policies\Traits\OwnershipAuthorization;
 
 class EventPolicy
 {
-    private function isOwner(User $user, Event $event): bool
-    {
-        return $user->id === $event->user_id;
-    }
+    use OwnershipAuthorization;
 
     public function view(User $user, Event $event): bool
     {
