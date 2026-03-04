@@ -15,10 +15,13 @@ class Task extends Model
         'completed',
     ];
 
-    protected $casts = [
-        'due_date' => 'date:Y-m-d',
-        'completed' => 'boolean',
-    ];
+     protected function casts(): array
+    {
+        return [
+            'due_date' => 'date:Y-m-d',
+            'completed' => 'boolean',
+        ];
+    }
 
     public function user(): BelongsTo
     {

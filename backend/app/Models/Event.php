@@ -15,10 +15,13 @@ class Event extends Model
         'end_date',
     ];
 
-    protected $casts = [
-        'start_date' => 'date:Y-m-d',
-        'end_date' => 'date:Y-m-d',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'due_date' => 'date:Y-m-d',
+            'completed' => 'boolean',
+        ];
+    }
 
     public function user(): BelongsTo
     {

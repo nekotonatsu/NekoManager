@@ -11,14 +11,17 @@ class Expense extends Model
         'user_id',
         'title',
         'amount',
-        'date',
+        'expense_date',
         'category',
     ];
 
-    protected $casts = [
-        'date' => 'date:Y-m-d',
-        'amount' => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'date:Y-m-d',
+            'end_date' => 'date:Y-m-d',
+        ];
+    }
 
     public function user(): BelongsTo
     {
