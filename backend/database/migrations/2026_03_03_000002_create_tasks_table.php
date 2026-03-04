@@ -20,6 +20,10 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->boolean('completed')->default(false);
             $table->timestamps();
+            // インデックス: ユーザーごとの検索・一覧表示を高速化
+            $table->index('user_id');
+            // インデックス: ユーザー別の期限順一覧・検索を高速化
+            $table->index(['user_id', 'due_date']);
         });
     }
 
