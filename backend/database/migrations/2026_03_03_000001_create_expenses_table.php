@@ -17,9 +17,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->integer('amount');
-            $table->date('date');
+            $table->date('expense_date');
             $table->string('category')->nullable();
             $table->timestamps();
+            // よく使われる検索条件 (user_id, date) に対する複合インデックス
+            $table->index(['user_id', 'date']);
         });
     }
 
