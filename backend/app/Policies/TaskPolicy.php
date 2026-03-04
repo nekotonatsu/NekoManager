@@ -7,18 +7,23 @@ use App\Models\User;
 
 class TaskPolicy
 {
-    public function view(User $user, Task $task): bool
+    private function isOwner(User $user, Task $task): bool
     {
         return $user->id === $task->user_id;
+    }
+
+    public function view(User $user, Task $task): bool
+    {
+        return $this->isOwner($user, $task);
     }
 
     public function update(User $user, Task $task): bool
     {
-        return $user->id === $task->user_id;
+        return $this->isOwner($user, $task);
     }
 
     public function delete(User $user, Task $task): bool
     {
-        return $user->id === $task->user_id;
+        return $this->isOwner($user, $task);
     }
 }
