@@ -8,7 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     * make daily use title
      */
     public function up(): void
     {
@@ -21,7 +20,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->timestamps();
             // よく使われる検索条件 (user_id, date) に対する複合インデックス
-            $table->index(['user_id', 'date']);
+            $table->index(['user_id', 'expense_date']);
         });
     }
 
