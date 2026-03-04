@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     * make daily task
+     */
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {

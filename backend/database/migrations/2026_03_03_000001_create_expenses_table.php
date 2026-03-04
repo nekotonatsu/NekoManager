@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     * make daily use title
+     */
     public function up(): void
     {
         Schema::create('expenses', function (Blueprint $table) {
