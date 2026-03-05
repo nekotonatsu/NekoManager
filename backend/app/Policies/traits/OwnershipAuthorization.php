@@ -9,11 +9,15 @@ trait OwnershipAuthorization
 {
     use HandlesAuthorization;
 
-    public function before(User $user)
-    {
+    public function before(
+        User $user, 
+        string $ability, ...$arguments
+    ) {
         if ($user->is_admin) {
             return true;
         }
+
+        return null;
     }
 
     protected function isOwner(User $user, $model): bool
