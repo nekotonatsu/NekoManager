@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Expense\Controllers;
+namespace App\Http\Controllers\Expense;
 
 use App\Models\Expense;
 use Illuminate\Http\JsonResponse;
