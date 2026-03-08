@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Task\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
