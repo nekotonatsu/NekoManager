@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Event;
 use App\Models\User;
-use App\Policies\Traits\OwnershipAuthorization;
+use App\Policies\traits\OwnershipAuthorization;
 
 class EventPolicy
 {
