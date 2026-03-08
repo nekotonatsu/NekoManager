@@ -13,16 +13,20 @@ class EventController extends Controller
     public function index(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'month' => 'sometimes|date_format:Y-m',
+            'month' => 'required|digist:4',
+            'year' => 'required|between:1,12'
         ]);
-        $query = Auth::user()->events();
 
-        if ($request->has('month') && !empty($validated['month'])) {
-            $query->whereYear('start_date', $validated['year'])
-                ->whereMonth('start_date', $validated['month']);
-        }
+        $userOwnEventData = Auth::user()
+            ->events()
+            ->whereYear('start_date', $validated['year'])
+            ->whereMonth('start_date', $validated['month'])
+            ->orderBy('start_date')
+            ->get();
 
-        return response()->json($query->orderBy('start_date')->get());
+        return response()->json(
+            $userOwnEventData
+        );
     }
 
     public function store(Request $request): JsonResponse
