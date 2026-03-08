@@ -51,7 +51,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title'    => 'sometimes|string|max:255',
             'amount'   => 'sometimes|integer|min:0',
-            'expense_date'     => 'sometimes|expense_date',
+            'expense_date'     => 'sometimes|date',
             'category' => 'nullable|string|max:255',
         ]);
 
@@ -72,15 +72,15 @@ class ExpenseController extends Controller
 
         // 月次サマリを DB ネイティブ集計で取得（例: "2025-01" => 12345）
         $summary = Auth::user()->expenses()
-            ->whereYear('date', $year)
-            ->selectRaw('DATE_FORMAT(date, "%Y-%m") as month, SUM(amount) as total')
+            ->whereYear('expense_date', $year)
+            ->selectRaw('DATE_FORMAT(expense_date, "%Y-%m") as month, SUM(amount) as total')
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month');
 
         // 年間合計も DB 上で集計
         $total = Auth::user()->expenses()
-            ->whereYear('date', $year)
+            ->whereYear('expense_date', $year)
             ->sum('amount');
         return response()->json([
             'year'    => (int) $year,
