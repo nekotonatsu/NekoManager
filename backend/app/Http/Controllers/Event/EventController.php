@@ -17,8 +17,8 @@ class EventController extends Controller
         $query = Auth::user()->events();
 
         if ($request->has('month') && !empty($validated['month'])) {
-            $query->whereYear('start_date', substr($request->month, 0, 4))
-                ->whereMonth('start_date', substr($request->month, 5, 2));
+            $query->whereYear('start_date', $validated->year)
+                ->whereMonth('start_date', $validated->month);
         }
 
         return response()->json($query->orderBy('start_date')->get());
