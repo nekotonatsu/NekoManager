@@ -66,6 +66,12 @@ class TaskTest extends TestCase
             ->deleteJson("/api/tasks/{$task->id}");
 
         $response->assertStatus(204);
+        $this->assertDatabaseMissing(
+            'tasks', 
+            [
+                'id' => $task->id,
+            ]
+        );
     }
 
     public function testCannotAccessOtherUserTask(): void
