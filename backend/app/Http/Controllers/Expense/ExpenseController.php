@@ -70,7 +70,10 @@ class ExpenseController extends Controller
 
     public function summary(Request $request): JsonResponse
     {
-        $year = $request->get('year', now()->year);
+        $validated = $request->validate([
+            'year' => 'sometimes|integer|digits:4|min:2000|max:2999',
+        ]);
+        $year = $validated['year'] ?? now()->year;
 
         // 月次サマリを DB ネイティブ集計で取得（例: "2025-01" => 12345）
         $summary = Auth::user()->expenses()
