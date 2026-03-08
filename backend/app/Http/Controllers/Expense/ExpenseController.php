@@ -14,11 +14,11 @@ class ExpenseController extends Controller
         $query = Auth::user()->expenses();
 
         if ($request->has('month')) {
-            $query->whereYear('date', substr($request->month, 0, 4))
-                ->whereMonth('date', substr($request->month, 5, 2));
+            $query->whereYear('expense_date', substr($request->month, 0, 4))
+                ->whereMonth('expense_date', substr($request->month, 5, 2));
         }
 
-        return response()->json($query->orderBy('date')->get());
+        return response()->json($query->orderBy('expense_date')->get());
     }
 
     public function store(Request $request): JsonResponse
@@ -26,7 +26,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title'    => 'required|string|max:255',
             'amount'   => 'required|integer|min:0',
-            'date'     => 'required|date',
+            'expense_date'     => 'required|date',
             'category' => 'nullable|string|max:255',
         ]);
 
@@ -47,7 +47,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title'    => 'sometimes|string|max:255',
             'amount'   => 'sometimes|integer|min:0',
-            'date'     => 'sometimes|date',
+            'expense_date'     => 'sometimes|expense_date',
             'category' => 'nullable|string|max:255',
         ]);
 
@@ -67,7 +67,7 @@ class ExpenseController extends Controller
         $year = $request->get('year', now()->year);
 
         $expenses = Auth::user()->expenses()
-            ->whereYear('date', $year)
+            ->whereYear('expense_date', $year)
             ->get();
 
         $summary = $expenses->groupBy(function ($expense) {
