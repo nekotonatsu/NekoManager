@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Event;
 
+use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
