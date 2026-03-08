@@ -3,11 +3,12 @@
 namespace App\Policies\Traits;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+// use Illuminate\Auth\Access\HandlesAuthorization;
 
 trait OwnershipAuthorization
 {
-    use HandlesAuthorization;
+    // allow denyが追加された際に再度追加
+    // use HandlesAuthorization;
 
     public function before(
         User $user, 
