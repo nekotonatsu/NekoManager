@@ -42,6 +42,10 @@ class TaskTest extends TestCase
 
         $response->assertStatus(201)
             ->assertJsonStructure(['id', 'title', 'due_date', 'completed']);
+        $this->assertDatabaseHas('tasks', [
+            'title'   => 'テストタスク',
+            'user_id' => $this->user->id,
+        ]);
     }
 
     public function testUpdateTask(): void
