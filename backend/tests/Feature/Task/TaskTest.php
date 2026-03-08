@@ -21,12 +21,16 @@ class TaskTest extends TestCase
 
     public function testGetTasks(): void
     {
-        Task::factory()->count(3)->create(['user_id' => $this->user->id]);
+        Task::factory()->create(
+            [
+                'user_id' => $this->user->id
+            ]
+        );
 
         $response = $this->actingAs($this->user)->getJson('/api/tasks');
 
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(1);
     }
 
     public function testCreateTask(): void

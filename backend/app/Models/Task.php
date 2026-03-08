@@ -18,7 +18,11 @@ class Task extends Model
         'completed',
     ];
 
-     protected function casts(): array
+    protected $attributes = [
+        'completed' => false
+    ];
+
+    protected function casts(): array
     {
         return [
             'due_date' => 'date:Y-m-d',
