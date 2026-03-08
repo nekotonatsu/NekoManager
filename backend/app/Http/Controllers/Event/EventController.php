@@ -12,9 +12,20 @@ class EventController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        if (!($request->has('year') && $request->has('month'))) {
+            // ここは後ほどrequestがない等エラーに変更する
+            return null;
+        }
+
         $validated = $request->validate([
-            'month' => 'sometimes|date_format:Y-m',
+            'month' => 'sometimes|date_format:m',
+            'year' => 'sometimes|date_format:Y'
         ]);
+        if (empty($validated['year'] || empty($validated['month']))) {
+            // ここは後ほどvalidate後に値が含まれていない等エラーに変更する
+            return null;
+        }
+
         $query = Auth::user()->events();
 
         if ($request->has('month') && !empty($validated['month'])) {
