@@ -11,11 +11,15 @@ class ExpenseController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'month' => 'sometimes|date_format:Y-m',
+        ]);
         $query = Auth::user()->expenses();
 
-        if ($request->has('month')) {
-            $query->whereYear('expense_date', substr($request->month, 0, 4))
-                ->whereMonth('expense_date', substr($request->month, 5, 2));
+        if ($request->has('month') && isset($validated['month'])) {
+            $month = Carbon::createFromFormat('Y-m', $validated['month']);
+            $query->whereYear('expense_date', $month->year)
+                ->whereMonth('expense_date', $month->month);
         }
 
         return response()->json($query->orderBy('expense_date')->get());
