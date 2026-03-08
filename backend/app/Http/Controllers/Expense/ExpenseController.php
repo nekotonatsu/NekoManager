@@ -75,18 +75,25 @@ class ExpenseController extends Controller
         ]);
         $year = $validated['year'] ?? now()->year;
 
-        // 月次サマリを DB ネイティブ集計で取得（例: "2025-01" => 12345）
-        $summary = Auth::user()->expenses()
+        // 対象年の支出を取得（アプリケーション層で月次サマリを集計）
+        $expenses = Auth::user()->expenses()
             ->whereYear('expense_date', $year)
-            ->selectRaw('DATE_FORMAT(expense_date, "%Y-%m") as month, SUM(amount) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
+            ->orderBy('expense_date')
+            ->get(['expense_date', 'amount']);
+
+        // 月次サマリを PHP / Carbon 側で集計（例: "2025-01" => 12345）
+        $summary = $expenses
+            ->groupBy(function ($expense) {
+                return Carbon::parse($expense->expense_date)->format('Y-m');
+            })
+            ->map(function ($group) {
+                return $group->sum('amount');
+            })
+            ->sortKeys();
 
         // 年間合計も DB 上で集計
-        $total = Auth::user()->expenses()
-            ->whereYear('expense_date', $year)
-            ->sum('amount');
+        $total = (int) $summary->sum();
+
         return response()->json([
             'year'    => (int) $year,
             'summary' => $summary,
