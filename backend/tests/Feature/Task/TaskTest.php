@@ -71,8 +71,7 @@ class TaskTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing(
-            'tasks', 
-            [
+            'tasks', [
                 'id' => $task->id,
             ]
         );
@@ -84,7 +83,7 @@ class TaskTest extends TestCase
         $task = Task::factory()
             ->create(['user_id' => $otherUser->id]);
 
-        $response =$this
+        $response = $this
             ->actingAs($this->user)
             ->getJson("/api/tasks/{$task->id}");
 
