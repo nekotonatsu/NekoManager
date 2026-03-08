@@ -8,9 +8,10 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    proxy: {
-      '/api': 'http://localhost',
-      '/sanctum': 'http://localhost',
-    },
+      host: true,
+      port: 5173,
+      hmr: {
+        host: 'localhost',
+      },
   },
 })
