@@ -1,9 +1,9 @@
 <?php 
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\Event\EventController;
+use App\Http\Controllers\Expense\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
