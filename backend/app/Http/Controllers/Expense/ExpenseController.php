@@ -75,7 +75,7 @@ class ExpenseController extends Controller
             ->get();
 
         $summary = $expenses->groupBy(function ($expense) {
-            return $expense->date->format('Y-m');
+            return $expense->expense_date->format('Y-m');
         })->map(function ($monthExpenses) {
             return $monthExpenses->sum('amount');
         });
