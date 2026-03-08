@@ -22,6 +22,6 @@ trait OwnershipAuthorization
 
     protected function isOwner(User $user, $model): bool
     {
-        return $user->id === $model->user_id;
+        return (int)$user->id === (int)$model->user_id;
     }
 }
