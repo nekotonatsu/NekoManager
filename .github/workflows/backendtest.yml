@@ -20,7 +20,9 @@ jobs:
 
         - name: Install dependencies
           working-directory: backend
-          run: composer install --no-interaction --prefer-dist
+          run: |
+            composer install --no-interaction --prefer-dist
+            composer dump-autoload --optimize
 
         - name: Generate APP_KEY
           working-directory: backend

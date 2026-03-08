@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'title',
@@ -15,7 +18,11 @@ class Task extends Model
         'completed',
     ];
 
-     protected function casts(): array
+    protected $attributes = [
+        'completed' => false
+    ];
+
+    protected function casts(): array
     {
         return [
             'due_date' => 'date:Y-m-d',
