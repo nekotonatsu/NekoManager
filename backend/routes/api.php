@@ -1,17 +1,26 @@
 <?php 
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
-// 認証不要
-// ユーザー登録
-Route::post('/auth/register', [AuthController::class, 'register']);
-// ログイン
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-// 認証必要
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
+    });
+});
+
 Route::middleware('auth:sanctum')->group(function () {
-    // ログアウト
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
-    Route::get('/auth/me', [AuthController::class, 'me']);
+    Route::apiResource('tasks', TaskController::class);
+
+    Route::apiResource('events', EventController::class);
+
+    Route::get('expenses/summary', [ExpenseController::class, 'summary']);
+    Route::apiResource('expenses', ExpenseController::class);
 });
