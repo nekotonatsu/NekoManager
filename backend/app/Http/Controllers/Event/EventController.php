@@ -11,9 +11,12 @@ class EventController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'month' => 'sometimes|date_format:Y-m',
+        ]);
         $query = Auth::user()->events();
 
-        if ($request->has('month')) {
+        if ($request->has('month') && !empty($validated['month'])) {
             $query->whereYear('start_date', substr($request->month, 0, 4))
                 ->whereMonth('start_date', substr($request->month, 5, 2));
         }
