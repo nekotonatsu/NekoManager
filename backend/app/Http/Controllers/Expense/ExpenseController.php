@@ -70,20 +70,22 @@ class ExpenseController extends Controller
     {
         $year = $request->get('year', now()->year);
 
-        $expenses = Auth::user()->expenses()
-            ->whereYear('expense_date', $year)
-            ->get();
+        // 月次サマリを DB ネイティブ集計で取得（例: "2025-01" => 12345）
+        $summary = Auth::user()->expenses()
+            ->whereYear('date', $year)
+            ->selectRaw('DATE_FORMAT(date, "%Y-%m") as month, SUM(amount) as total')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('total', 'month');
 
-        $summary = $expenses->groupBy(function ($expense) {
-            return $expense->expense_date->format('Y-m');
-        })->map(function ($monthExpenses) {
-            return $monthExpenses->sum('amount');
-        });
-
+        // 年間合計も DB 上で集計
+        $total = Auth::user()->expenses()
+            ->whereYear('date', $year)
+            ->sum('amount');
         return response()->json([
             'year'    => (int) $year,
             'summary' => $summary,
-            'total'   => $expenses->sum('amount'),
+            'total'   => $total,
         ]);
     }
 }
