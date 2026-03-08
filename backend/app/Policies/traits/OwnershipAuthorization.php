@@ -13,7 +13,7 @@ trait OwnershipAuthorization
         User $user, 
         string $ability, ...$arguments
     ) {
-        if ($user != null && $user->is_admin) {
+        if ($user->is_admin) {
             return true;
         }
 
